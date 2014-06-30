@@ -12,10 +12,8 @@ namespace UnitTestProject
         [TestMethod]
         public void SendTest()
         {
-            //Rmq.serverName = "www.tfs.ultidev.com";
-
             //RMQ.Send("Wassup.", useSsl: false);
-            Rmq.Send("Wassup with SSL!", useSsl: true, acceptableSslErrors: SslPolicyErrors.RemoteCertificateNameMismatch);
+            Rmq.Send("Wassup with SSL!", username: "guest", password: "guest", useSsl: true, acceptableSslErrors: SslPolicyErrors.RemoteCertificateNameMismatch);
         }
     }
 }

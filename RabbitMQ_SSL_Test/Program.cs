@@ -26,10 +26,13 @@ namespace RabbitMQ_SSL_Test
                 Console.WriteLine("Using \"{0}\" as a destination RabbitMQ hostname. Specify another as a command line argument, if necessary.\r\n", Rmq.serverName);
             }
 
+            string username, password;
+            username = GetCredentials(out password);
+
             try
             {
-                SendInClear();
-                sslRules.Any(SendWithSsl);
+                SendInClear(username, password);
+                sslRules.Any(rule => SendWithSsl(rule, username, password));
             }
             finally
             {
@@ -41,7 +44,22 @@ namespace RabbitMQ_SSL_Test
             }
         }
 
-        private static bool SendWithSsl(SslPolicyErrors allowedSslRule)
+        private static string GetCredentials(out string password)
+        {
+            string username;
+            Console.Write("Enter RabbitMQ username (blank for \"guest\"):");
+            username = Console.ReadLine();
+            Console.Write("Enter RabbitMQ password (blank for \"guest\"):");
+            password = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(username))
+                username = "guest";
+            if (string.IsNullOrEmpty(password))
+                password = "guest";
+            return username;
+        }
+
+        private static bool SendWithSsl(SslPolicyErrors allowedSslRule, string username, string password)
         {
             Console.Write("Sending a message using SSL (5671) endpoint with allowed error type: \"{0}\"... ", allowedSslRule);
 
@@ -49,7 +67,7 @@ namespace RabbitMQ_SSL_Test
             {
                 string message = string.Format("Message sent via SSL with allowed error type: \"{0}\".",
                     allowedSslRule);
-                Rmq.Send(message, useSsl: true, acceptableSslErrors: allowedSslRule);
+                Rmq.Send(message, username, password, useSsl: true, acceptableSslErrors: allowedSslRule);
                 Console.WriteLine("Success!");
                 return true;
             }
@@ -61,10 +79,10 @@ namespace RabbitMQ_SSL_Test
             return false;
         }
 
-        private static void SendInClear()
+        private static void SendInClear(string username, string password)
         {
             Console.Write("Sending a message using regular, non-SSL endpoint... ");
-            Rmq.Send("No SSL - regular endpoint.", useSsl: false);
+            Rmq.Send("No SSL - regular endpoint.", username, password, useSsl: false);
             Console.WriteLine("Success!\r\n");
         }
 

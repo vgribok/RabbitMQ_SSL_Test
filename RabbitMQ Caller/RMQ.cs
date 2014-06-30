@@ -9,11 +9,11 @@ namespace RabbitMQ_Caller
     {
         public static string serverName = Environment.MachineName;
 
-        public static void Send(string messageText, bool useSsl, SslPolicyErrors acceptableSslErrors = SslPolicyErrors.None)
+        public static void Send(string messageText, string username, string password, bool useSsl, SslPolicyErrors acceptableSslErrors = SslPolicyErrors.None)
         {
             messageText += string.Format(" {0}", DateTime.Now);
 
-            var factory = new ConnectionFactory {HostName = serverName, Ssl = {Enabled = useSsl}};
+            var factory = new ConnectionFactory {HostName = serverName, Ssl = {Enabled = useSsl}, UserName = username, Password = password };
 
             if (useSsl)
             {

@@ -26,12 +26,13 @@ namespace RabbitMQ_SSL_Test
                 Console.WriteLine("Using \"{0}\" as a destination RabbitMQ hostname. Specify another as a command line argument, if necessary.\r\n", Rmq.serverName);
             }
 
-            string username, password;
-            username = GetCredentials(out password);
+            string password;
+            string username = GetCredentials(out password);
 
             try
             {
                 SendInClear(username, password);
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                 sslRules.Any(rule => SendWithSsl(rule, username, password));
             }
             finally

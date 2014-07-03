@@ -20,10 +20,10 @@ namespace RabbitMQ_SSL_Test
         {
             Console.WriteLine("Will attempt to send two simple text messages to the \"SSL Test Q\" queue.");
             if (args.Length > 0)
-                Rmq.serverName = args[0];
+                Rmq.ServerName = args[0];
             else
             {
-                Console.WriteLine("Using \"{0}\" as a destination RabbitMQ hostname. Specify another as a command line argument, if necessary.\r\n", Rmq.serverName);
+                Console.WriteLine("Using \"{0}\" as a destination RabbitMQ hostname. Specify another as a command line argument, if necessary.\r\n", Rmq.ServerName);
             }
 
             string password;

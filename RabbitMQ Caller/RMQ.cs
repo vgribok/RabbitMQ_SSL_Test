@@ -7,17 +7,17 @@ namespace RabbitMQ_Caller
 {
     public class Rmq
     {
-        public static string serverName = Environment.MachineName;
+        public static string ServerName = Environment.MachineName;
 
         public static void Send(string messageText, string username, string password, bool useSsl, SslPolicyErrors acceptableSslErrors = SslPolicyErrors.None)
         {
             messageText += string.Format(" {0}", DateTime.Now);
 
-            var factory = new ConnectionFactory {HostName = serverName, Ssl = {Enabled = useSsl}, UserName = username, Password = password };
+            var factory = new ConnectionFactory {HostName = ServerName, Ssl = {Enabled = useSsl}, UserName = username, Password = password };
 
             if (useSsl)
             {
-                factory.Ssl.ServerName = serverName;
+                factory.Ssl.ServerName = ServerName;
                 factory.Ssl.AcceptablePolicyErrors = acceptableSslErrors;
             }
 
